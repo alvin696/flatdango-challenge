@@ -1,0 +1,35 @@
+#container {
+    display: flex;
+    flex-direction: row;
+  }
+  
+  #sidebar {
+    width: 30%;
+    background-color: #f2f2f2;
+    padding: 20px;
+  }
+  
+  #main {
+    width: 70%;
+    padding: 20px;
+  }
+  
+  #films {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .film.item {
+    margin-bottom: 10px;
+    cursor: pointer;
+  }
+  
+  .film.item:hover {
+    text-decoration: underline;
+  }
+  
+  .sold-out {
+    color: gray;
+  }
+  

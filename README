@@ -1,0 +1,59 @@
+Flatdango Application
+Flatdango is a movie ticket booking application that enables users to purchase movie tickets from the Flatiron Movie Theater. The application allows users to browse the available movie selection, select the desired showtime, and purchase their tickets online.
+
+Table of Contents
+Instructions
+Technologies Used
+Setup
+Features
+Future Improvements
+Instructions
+To develop the Flatdango application, please follow the instructions provided below:
+
+Plan out the user interface and how the information will be displayed on the webpage.
+Design a database schema that will store the relevant information about the movies, showtimes, and ticket sales.
+Build out the backend of the application using a web framework of your choice.
+Develop the frontend of the application using HTML, CSS, and JavaScript.
+Test the application and debug any issues.
+Deploy the application to a hosting service of your choice.
+Technologies Used
+The following technologies were used to develop the Flatdango application:
+
+Backend Framework: Flask
+Frontend Languages: HTML, CSS, JavaScript
+Database: SQLite
+Hosting Service: Heroku
+Setup
+To set up the Flatdango application on your local machine, please follow the instructions provided below:
+
+Clone the repository to your local machine using the following command:
+bash
+Copy code
+git clone https://github.com/your-username/flatdango.git
+Navigate to the project directory:
+bash
+Copy code
+cd flatdango
+Install the required dependencies:
+Copy code
+pip install -r requirements.txt
+Start the Flask server:
+arduino
+Copy code
+flask run
+Open your web browser and navigate to http://localhost:5000.
+Features
+The following features are currently available in the Flatdango application:
+
+Browse movies
+View movie details (description, rating, duration)
+Select showtime
+Purchase tickets
+View ticket confirmation
+Future Improvements
+Here are some potential improvements that could be made to the Flatdango application in the future:
+
+Add user authentication
+Allow users to save their favorite movies
+Provide recommended movies based on user preferences
+Allow users to rate movies and leave reviews
