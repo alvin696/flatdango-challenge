@@ -47,3 +47,33 @@ function loadMovieDetails(id) {
       showtime.innerText = data.showtime;
       availableTickets.innerText = data.capacity - data.tickets_sold;
       if (data.capacity - data.tickets_sold === 0) {
+        buyTicketBtn.disabled = true;
+        buyTicketBtn.innerText = 'Sold Out';
+      } else {
+        buyTicketBtn.disabled = false;
+        buyTicketBtn.innerText = 'Buy Ticket';
+      }
+      buyTicketBtn.onclick = function() {
+        const updatedTickets = data.tickets_sold + 1;
+        fetch(`${filmsUrl}/${id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            tickets_sold: updatedTickets
+          })
+        })
+          .then(response => response.json())
+          .then(data => {
+            availableTickets.innerText = data.capacity - data.tickets_sold;
+            if (data.capacity - data.tickets_sold === 0) {
+              buyTicketBtn.disabled = true;
+              buyTicketBtn.innerText = 'Sold Out';
+            }
+          })
+          .catch(error => console.log(error));
+      };
+    })
+    .catch(error => console.log(error));
+}
