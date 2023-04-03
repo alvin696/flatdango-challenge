@@ -2,27 +2,26 @@
 <html>
 <head>
   <title>Movie Theater</title>
-  <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <div class="sidebar">
-      <h2>Movie List</h2>
-      <ul id="films"></ul>
-    </div>
-    <div class="main">
-      <h1 id="movie-title"></h1>
-      <img id="poster" src="" alt="Movie poster">
-      <div class="details">
-        <p><span class="label">Runtime:</span> <span id="runtime"></span></p>
-        <p><span class="label">Showtime:</span> <span id="showtime"></span></p>
-        <p><span class="label">Available Tickets:</span> <span id="available-tickets"></span></p>
-        <button id="buy-ticket-btn">Buy Ticket</button>
-        <button id="delete-movie-btn" style="display:none">Delete Movie</button>
+  <div id="app">
+    <h1>Movie Theater</h1>
+    <div>
+      <h2>Movie Details</h2>
+      <div>
+        <img id="poster" src="">
+        <h3 id="title"></h3>
+        <p>Runtime: <span id="runtime"></span></p>
+        <p>Showtime: <span id="showtime"></span></p>
+        <p>Available Tickets: <span id="tickets"></span></p>
+        <button id="buy-ticket">Buy Ticket</button>
       </div>
     </div>
+    <div>
+      <h2>All Movies</h2>
+      <ul id="films"></ul>
+    </div>
   </div>
-
   <script src="script.js"></script>
 </body>
 </html>

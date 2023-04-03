@@ -1,26 +1,18 @@
-const filmsUrl = 'http://localhost:3000/films';
-
-// Load movie details when the page loads
-window.onload = function() {
-  loadMovieDetails(1);
-  loadMovieList();
-};
-
 // Load movie list on the left sidebar
 function loadMovieList() {
-  const filmList = document.getElementById('films');
   fetch(filmsUrl)
     .then(response => response.json())
     .then(data => {
+      const filmList = document.getElementById('films');
       filmList.innerHTML = '';
       for (let i = 0; i < data.length; i++) {
         const film = data[i];
         const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = '#';
+        a.textContent = film.title;
+        li.appendChild(a);
         li.classList.add('film', 'item');
-        li.innerText = film.title;
-        li.addEventListener('click', function() {
-          loadMovieDetails(film.id);
-        });
         if (film.capacity - film.tickets_sold === 0) {
           li.classList.add('sold-out');
         }
@@ -30,73 +22,56 @@ function loadMovieList() {
           event.stopPropagation();
           deleteFilm(film.id, li);
         });
+        a.addEventListener('click', function() {
+          loadMovieDetails(film.id);
+          const display = document.querySelector('#display');
+          display.innerHTML = '';
+          const title = document.createElement('h1');
+          const poster = document.createElement('img');
+          const description = document.createElement('h3');
+          const showTime = document.createElement('h4');
+          const runtime = document.createElement('h4');
+          const tickets = document.createElement('h4');
+          const buy = document.createElement('button');
+          title.textContent = film.title;
+          poster.src = film.poster;
+          description.textContent = `Description: ${film.description}`;
+          showTime.textContent = `Movie starts at: ${film.showtime}`;
+          runtime.textContent = `Duration: ${film.runtime} minutes`;
+          tickets.textContent = `Tickets remaining: ${film.capacity - film.tickets_sold}`;
+          buy.textContent = `BUY TICKET`;
+          display.appendChild(title);
+          display.appendChild(poster);
+          display.appendChild(description);
+          display.appendChild(showTime);
+          display.appendChild(runtime);
+          display.appendChild(buy);
+          display.appendChild(tickets);
+          buy.addEventListener('click', (e) => {
+            e.preventDefault();
+            film.tickets_sold++;
+            const remainingTickets = film.capacity - film.tickets_sold;
+            fetch(`${filmsUrl}/${film.id}`, {
+              method: 'PATCH',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                tickets_sold: film.tickets_sold,
+              }),
+            })
+              .then((response) => {
+                if (response.ok) {
+                  tickets.textContent = `Tickets remaining: ${remainingTickets}`;
+                }
+              })
+              .catch((err) => console.log(err));
+            tickets.textContent = `Tickets remaining: ${remainingTickets}`;
+          });
+        });
         li.appendChild(deleteBtn);
         filmList.appendChild(li);
       }
-    })
-    .catch(error => console.log(error));
-}
-
-// Load movie details in the main area
-function loadMovieDetails(id) {
-  const movieTitle = document.getElementById('movie-title');
-  const poster = document.getElementById('poster');
-  const runtime = document.getElementById('runtime');
-  const showtime = document.getElementById('showtime');
-  const availableTickets = document.getElementById('available-tickets');
-  const buyTicketBtn = document.getElementById('buy-ticket-btn');
-  fetch(`${filmsUrl}/${id}`)
-    .then(response => response.json())
-    .then(data => {
-      movieTitle.innerText = data.title;
-      poster.src = data.poster;
-      runtime.innerText = `${data.runtime} min`;
-      showtime.innerText = data.showtime;
-      availableTickets.innerText = `${data.capacity - data.tickets_sold} tickets available`;
-      if (data.capacity - data.tickets_sold === 0) {
-        buyTicketBtn.disabled = true;
-        buyTicketBtn.innerText = 'Sold Out';
-      } else {
-        buyTicketBtn.disabled = false;
-        buyTicketBtn.innerText = 'Buy Ticket';
-      }
-      buyTicketBtn.removeEventListener('click', buyTicket);
-      buyTicketBtn.addEventListener('click', function() {
-        buyTicket(id, data.capacity, data.tickets_sold);
-      });
-    })
-    .catch(error => console.log(error));
-}
-
-// Buy a ticket for a movie
-function buyTicket(id, capacity, ticketsSold) {
-  const newTicketsSold = ticketsSold + 1;
-  if (newTicketsSold <= capacity) {
-    const patchOptions = {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ tickets_sold: newTicketsSold })
-    };
-    fetch(`${filmsUrl}/${id}`, patchOptions)
-      .then(response => response.json())
-      .then(data => {
-        loadMovieDetails(id);
-      })
-      .catch(error => console.log(error));
-  }
-}
-
-// Delete a film from the server and from the list
-function deleteFilm(id, filmElement) {
-  const deleteOptions = {
-    method: 'DELETE'
-  };
-  fetch(`${filmsUrl}/${id}`, deleteOptions)
-    .then(response => response.json())
-    .then(data => {
-      filmElement.remove();
     })
     .catch(error => console.log(error));
 }
